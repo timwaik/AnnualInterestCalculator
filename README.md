@@ -14,7 +14,7 @@ This is a simple piece of code made with Java 8 in the Eclipse IDE.
  - The total amount of money per month and year.
  - The paid interest per month.
  
- ### Additional information
+ ### Additional information:-
  
  The program assumes that interest is paid out each month.
  
