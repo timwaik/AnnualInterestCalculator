@@ -1,4 +1,4 @@
-# AnnualInterestCalculator
+# Annual Interest Calculator
 
 This is a simple piece of code made with Java 8 in the Eclipse IDE.
 
