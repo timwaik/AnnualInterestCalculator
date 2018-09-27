@@ -10,7 +10,7 @@ This is a simple piece of code made with Java 8 in the Eclipse IDE.
 - Users specify the number of years the program will calculate their interest for.
 - If the users chose a fixed monthly deposit, they input the value of the monthly deposit per year.
 
-Program will detail:-
+Program will display:-
   - The paid interest per month.
   - The accrued interest per month/year.
   - The total amount of money per month/year.
