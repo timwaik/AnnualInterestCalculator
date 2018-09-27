@@ -11,9 +11,9 @@ This is a simple piece of code made with Java 8 in the Eclipse IDE.
 - If the users chose a fixed monthly deposit, they input the value of the monthly deposit per year.
 
 Program will detail:-
- -  The paid interest per month.
- -  The accrued interest per month/year.
- -  The total amount of money per month/year.
+  - The paid interest per month.
+  - The accrued interest per month/year.
+  - The total amount of money per month/year.
  
  ### Additional information:-
  
