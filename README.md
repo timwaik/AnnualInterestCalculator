@@ -18,3 +18,7 @@ Program will display:-
  ### Additional information:-
  
  The program assumes that interest is paid out each month.
+ 
+ ### Final tweaks:-
+ 
+ I have added try catch blocks to optimise the code. The final step will be to reorganise the code to give it a cleaner look.
