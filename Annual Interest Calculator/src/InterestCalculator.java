@@ -3,6 +3,7 @@
  * This code is functional, but does not implement any try/catch blocks,
  * */
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class InterestCalculator {
@@ -13,7 +14,7 @@ public class InterestCalculator {
 		System.out.println("Hello there, I am your annual interest calculator.");
 	}
 
-	public static float baseBalance() {
+	public static float baseBalance() throws InputMismatchException {
 		float baseBalance;
 		System.out.println("\nHow much money do you currently have in your account?");
 		baseBalance = input.nextFloat();
@@ -21,7 +22,7 @@ public class InterestCalculator {
 		return baseBalance;
 	}
 
-	public static int numberOfYears() {
+	public static int numberOfYears() throws InputMismatchException {
 		int years;
 		System.out.println("\nHow many years would you like to run this simulation for?");
 		years = input.nextInt();
@@ -29,7 +30,7 @@ public class InterestCalculator {
 		return years;
 	}
 
-	public static float interestRate() {
+	public static float interestRate() throws InputMismatchException {
 		System.out.println("\nWhat's your annual interest rate?");
 		float interest;
 		interest = input.nextFloat();
@@ -38,7 +39,7 @@ public class InterestCalculator {
 		return interest;
 	}
 
-	public static int fixedOrVariable() {
+	public static int fixedOrVariable() throws InputMismatchException {
 		int indicator;
 		String type = null;
 		System.out.println("\nAre you depositing a fixed amount or a variable amount every month?");
@@ -59,9 +60,19 @@ public class InterestCalculator {
 	public static float[] fixedMonthlyDeposit(int years) {
 		float fixedDeposit[] = new float[years];
 		for (int i = 0; i < years; i++) {
+			int loop = 0;
 			System.out.println("\nHow much money are you depositing monthly for year " + (i + 1));
-			fixedDeposit[i] = input.nextFloat();
-			input.nextLine();
+			while (loop == 0) {
+				try {
+					fixedDeposit[i] = input.nextFloat();
+					input.nextLine();
+					loop = 1;
+				} catch (InputMismatchException e) {
+					System.out.println("Only numbers accepted for deposit input, try again.");
+					input.next();
+					loop = 0;
+				}
+			}
 		}
 		System.out.println("\nCalculating..");
 		return fixedDeposit;
@@ -72,10 +83,20 @@ public class InterestCalculator {
 		for (int i = 1; i <= years; i++) {
 			for (int i1 = 1; i1 <= 12; i1++) {
 				System.out.println("For month: " + i1 + " and year: " + i + " how much money are you depositing?");
-				variableMonthlyDeposit[(i * i1) - 1] = input.nextInt();
-				input.nextLine();
-				System.out.println("You are depositing " + variableMonthlyDeposit[(i * i1) - 1] + " for the month " + i1
-						+ " and year: " + i + "\n");
+				int loop = 0;
+				while (loop == 0) {
+					try {
+						variableMonthlyDeposit[(i * i1) - 1] = input.nextInt();
+						input.nextLine();
+						loop = 1;
+					} catch (InputMismatchException e) {
+						System.out.println("Only numbers accepted for deposit input, try again.");
+						input.next();
+						loop = 0;
+					}
+					System.out.println("You are depositing " + variableMonthlyDeposit[(i * i1) - 1] + " for the month "
+							+ i1 + " and year: " + i + "\n");
+				}
 			}
 		}
 		return variableMonthlyDeposit;
@@ -157,34 +178,60 @@ public class InterestCalculator {
 	}
 
 	public static int continueRunning() {
-		int indicator;
-		System.out.println("Do you want to continue running the program?");
-		System.out.println("Type in '1' for yes and '2' for no. ");
-		indicator = input.nextInt();
-		input.nextLine();
+		int indicator = 0;
+		int loop;
+		while (indicator == 0)
+			try {
+				do {
+					System.out.println("Do you want to continue running the program?");
+					System.out.println("Type in '1' for yes and '2' for no. ");
+					indicator = input.nextInt();
+					input.nextLine();
+					if (indicator != 1 && indicator != 2) {
+						System.out.println("Invalid input, try again.");
+						loop = 0;
+					} else {
+						loop = 1;
+					}
+				} while (loop == 0);
+			} catch (InputMismatchException e) {
+				System.out.println("You can't input an alphabet");
+				input.next();
+				indicator = 0;
+			}
 		return indicator;
 	}
 
 	public static int startOver() {
-		int startOver;
-		System.out.println("Do you want to start over, (Deletes existing data) or "
-				+ "continue where you left off? (Keeps existing data)");
-		System.out.println("Type '1' to start over or '2'' to continue where you left off:");
-		startOver = input.nextInt();
-		input.nextLine();
-		System.out.print("You chose to ");
-		if (startOver == 1) {
-			System.out.println("start over.\n");
-		}
-		if (startOver == 2) {
-			System.out.println("continue where you left off.\n");
+		int startOver = 0;
+		int loop = 0;
+		while (loop == 0) {
+			System.out.println("Do you want to start over, (Deletes existing data) or "
+					+ "continue where you left off? (Keeps existing data)");
+			System.out.println("Type '1' to start over or '2'' to continue where you left off:");
+			try {
+				startOver = input.nextInt();
+				input.nextLine();
+				loop = 1;
+			} catch (InputMismatchException e) {
+				System.out.println("You can only type a number. Try again!");
+				input.next();
+			}
+			if (loop == 1) {
+				System.out.print("You chose to ");
+				if (startOver == 1) {
+					System.out.println("start over.\n");
+				}
+				if (startOver == 2) {
+					System.out.println("continue where you left off.\n");
+				}	
+			}
 		}
 		return startOver;
 	}
 
 	public static float resetData() {
 		float baseBalance;
-		greeting();
 		baseBalance = baseBalance();
 		return baseBalance;
 	}
@@ -196,19 +243,63 @@ public class InterestCalculator {
 		int startOver = 0;
 		int indicator = 0;
 		int years = 0;
+		int loop = 0;
 
 		do {
 
 			if (startOver != 2) {
-				baseBalance = resetData();
-			}
-			else if (startOver == 2) {
+				greeting();
+				loop = 0;
+				while (loop == 0) {
+					try {
+						baseBalance = resetData();
+						loop = 1;
+					} catch (InputMismatchException e) {
+						System.out.println("Your base balance must be a number. Type in a number.");
+						input.next();
+						loop = 0;
+					}
+				}
+			} else if (startOver == 2) {
 				System.out.println("From your previous run of this program. Your total balance was left at:");
 				System.out.println(baseBalance + "\n");
 			}
-			interest = interestRate();
-			indicator = fixedOrVariable();
-			years = numberOfYears();
+
+			loop = 0;
+			while (loop == 0) {
+				try {
+					interest = interestRate();
+					loop = 1;
+				} catch (InputMismatchException e) {
+					System.out.println("Your input must be a number. Type in a number.");
+					input.next();
+					loop = 0;
+				}
+			}
+
+			loop = 0;
+			while (loop == 0) {
+				try {
+					indicator = fixedOrVariable();
+					loop = 1;
+				} catch (InputMismatchException e) {
+					System.out.println("Your input must be either 1 or 2.");
+					input.next();
+					loop = 0;
+				}
+			}
+
+			loop = 0;
+			while (loop == 0) {
+				try {
+					years = numberOfYears();
+					loop = 1;
+				} catch (InputMismatchException e) {
+					System.out.println("Your input must be a number. Type in a number.");
+					input.next();
+					loop = 0;
+				}
+			}
 
 			if (indicator == 1) {
 				float fixedDeposit[] = fixedMonthlyDeposit(years);
@@ -220,8 +311,7 @@ public class InterestCalculator {
 			continueRunning = continueRunning();
 			if (continueRunning == 1) {
 				startOver = startOver();
-			}
-			else {
+			} else {
 				System.out.println("Thank you and goodbye!");
 			}
 		} while (continueRunning == 1);
